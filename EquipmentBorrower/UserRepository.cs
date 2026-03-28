@@ -9,4 +9,9 @@ public class UserRepository
         Users.Add(user);
         return user;
     }
+
+    public List<User> FindAll()
+    {
+        return Users;
+    }
 }

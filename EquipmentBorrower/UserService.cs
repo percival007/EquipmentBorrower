@@ -8,4 +8,9 @@ public class UserService
     {
         _userRepository.Save(user);
     }
+
+    public List<User> GetAll()
+    {
+        return _userRepository.FindAll();
+    }
 }

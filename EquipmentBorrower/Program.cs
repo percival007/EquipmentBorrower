@@ -7,6 +7,18 @@ public class Program
         var userService = new UserService();
         var equipmentService = new EquipmentService();
         var rentService = new RentService();
+        
+        var laptop1 = new Laptop("Lenovo", "Black", 32, "i7");
+        equipmentService.AddEquipment(laptop1);
+
+        var camera1 = new Camera("Canon", "Black", 7, true);
+        equipmentService.AddEquipment(camera1);
+
+        var projector1 = new Projector("Cosmo", "White", 10000, "1080x1600");
+        equipmentService.AddEquipment(projector1);
+        
+        var projector2 = new Projector("Xiaomi", "Red", 8000, "1080x1600");
+        equipmentService.AddEquipment(projector2);
 
         var student1 = new Student("Jan", "Markowski", "s12345");
         userService.AddUser(student1);
@@ -19,39 +31,25 @@ public class Program
 
         var employee2 = new Employee("Paweł", "Kowalski", "Architecture");
         userService.AddUser(employee2);
-
-        var laptop1 = new Laptop("Lenovo", "Black", 32, "i7");
-        equipmentService.AddEquipment(laptop1);
-
-        var camera1 = new Camera("Canon", "Black", 7, true);
-        equipmentService.AddEquipment(camera1);
-
-        var projector1 = new Projector("Cosmo", "White", 10000, "1080x1600");
-        equipmentService.AddEquipment(projector1);
-
-        Console.WriteLine("===== EQUIPMENTS =====");
-        equipmentService.GetEquipments().ForEach(Console.WriteLine);
-
+        
+        rentService.Rent(student2, projector2, new DateTime(2026, 3, 21));
+        
         rentService.Rent(student1, camera1, new DateTime(2026, 3, 21));
-        rentService.Rent(student1, laptop1, new DateTime(2026, 3, 21));
-
-        Console.WriteLine("===== ACTIVE RENTS =====");
-        rentService.GetActiveRents(student1).ForEach(Console.WriteLine);
-
-        Console.WriteLine("===== EQUIPMENTS AFTER RENT =====");
-        equipmentService.GetEquipments().ForEach(Console.WriteLine);
+        rentService.Rent(student1, projector1, new DateTime(2026, 3, 21));
+        try
+        {
+            rentService.Rent(student1, laptop1, new DateTime(2026, 3, 21));
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Wystąpił problem: {e.Message}");
+        }
 
         rentService.Return(student1, camera1, new DateTime(2026, 3, 22));
-        Console.WriteLine("===== EQUIPMENTS AFTER LATE RETURN =====");
-        equipmentService.GetEquipments().ForEach(Console.WriteLine);
-
-        Console.WriteLine("===== LATE RETURN RENTS =====");
-        rentService.GetAllLateReturnedRents().ForEach(Console.WriteLine);
-
-        Console.WriteLine("===== AVAILABLE EQUIPMENTS =====");
-        equipmentService.GetAvailableEquipments().ForEach(Console.WriteLine);
-
-        equipmentService.ServiceEquipment(projector1);
+        Console.WriteLine($"Użytkownik dostał karę bo nie oddał w terminie: {student1.TotalPenalty}");
+        
+        rentService.Return(student2, projector2, new DateTime(2026, 3, 20));
+        Console.WriteLine($"Użytkownik nie dostał kary bo oddał w terminie: {student2.TotalPenalty}");
 
         Console.WriteLine($"Report: {rentService.GetReport()}");
     }

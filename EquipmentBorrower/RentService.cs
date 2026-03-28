@@ -3,6 +3,7 @@
 public class RentService
 {
     private readonly RentRepository _rentRepository = new();
+    private readonly UserService _userService = new();
 
     public void Rent(User user, Equipment equipment, DateTime returnDate)
     {
@@ -62,6 +63,7 @@ public class RentService
     {
         var rents = _rentRepository.FindAll();
         var activeRents = rents.Count(r => r.ReturnDate == null);
-        return $"Number of all rents: {rents.Count}, Active rents: {activeRents}";
+        var userCount = _userService.GetAll().Count;
+        return $"Number of all rents: {rents.Count}, Active rents: {activeRents}, Registered users: {userCount}";
     }
 }
