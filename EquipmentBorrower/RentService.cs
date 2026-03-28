@@ -13,7 +13,7 @@ public class RentService
 
         var countRented = user.Rents.Count(r => r.Equipment.Status == EquipmentStatus.Rented);
 
-        if (countRented >= GetMaxRentCount(user))
+        if (countRented >= RentUtil.GetMaxRentCount(user))
         {
             throw new InvalidOperationException("Cannot Rent more than 2 equipments");
         }
@@ -23,11 +23,6 @@ public class RentService
         user.Rents.Add(rent);
         equipment.Rents.Add(rent);
         _rentRepository.Save(rent);
-    }
-
-    private int GetMaxRentCount(User user)
-    {
-        return user.GetType() == typeof(Student) ? 2 : 5;
     }
 
     public void Return(User user, Equipment equipment, DateTime returnDate)
