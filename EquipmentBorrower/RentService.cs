@@ -6,6 +6,16 @@ public class RentService
 
     public void Rent(User user, Equipment equipment, DateTime returnDate)
     {
+        ValidateRent(user, equipment);
+        equipment.Status = EquipmentStatus.Rented;
+        var rent = new Rent(user, equipment, returnDate);
+        user.Rents.Add(rent);
+        equipment.Rents.Add(rent);
+        _rentRepository.Save(rent);
+    }
+
+    private static void ValidateRent(User user, Equipment equipment)
+    {
         if (equipment.Status != EquipmentStatus.Available)
         {
             throw new InvalidOperationException("Equipment is not available");
@@ -17,26 +27,25 @@ public class RentService
         {
             throw new InvalidOperationException("Cannot Rent more than 2 equipments");
         }
-
-        equipment.Status = EquipmentStatus.Rented;
-        var rent = new Rent(user, equipment, returnDate);
-        user.Rents.Add(rent);
-        equipment.Rents.Add(rent);
-        _rentRepository.Save(rent);
     }
 
     public void Return(User user, Equipment equipment, DateTime returnDate)
     {
         var rent = user.Rents.First(r => r.Equipment == equipment && r.Equipment.Status == EquipmentStatus.Rented);
-        if (rent.DueDate < returnDate)
-        {
-            user.TotalPenalty += 20;
-        }
+        AddPenaltyOnUser(user, returnDate, rent);
 
         rent.ReturnDate = returnDate;
         equipment.Status = EquipmentStatus.Available;
         user.Rents.Remove(rent);
         equipment.Rents.Remove(rent);
+    }
+
+    private static void AddPenaltyOnUser(User user, DateTime returnDate, Rent rent)
+    {
+        if (rent.DueDate < returnDate)
+        {
+            user.TotalPenalty += 20;
+        }
     }
 
     public List<Rent> GetAllLateReturnedRents()
