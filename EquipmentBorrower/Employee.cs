@@ -1,6 +1,12 @@
 ﻿namespace EquipmentBorrower;
 
-public class Employee(string firstName, string lastName, int salary) : User(firstName, lastName)
+public class Employee(string firstName, string lastName, string department) : User(firstName, lastName)
 {
-    private int Salary { get; set; } = salary;
+    private string Department { get; } = department;
+
+    public override string ToString()
+    {
+        return
+            $"Id: {Id}, FirstName: {FirstName}, LastName: {LastName}, TotalPenalty: {TotalPenalty}, Department: {Department}";
+    }
 }

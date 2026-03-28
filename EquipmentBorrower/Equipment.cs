@@ -1,8 +1,15 @@
 ﻿namespace EquipmentBorrower;
 
-public abstract class Equipment(string brand, float weight, string color)
+public abstract class Equipment(string brand, string color)
 {
-    private string Brand { get; } = brand;
-    private float Weight { get; } = weight;
-    private string Color { get; } = color;
+    protected Guid Id { get; } = Guid.NewGuid();
+    protected string Brand { get; } = brand;
+    protected string Color { get; } = color;
+    public EquipmentStatus Status { get; set; } = EquipmentStatus.Available;
+    public List<Rent> Rents { get; } = [];
+
+    public override string ToString()
+    {
+        return $"Id: {Id}, Brand: {Brand}, Color: {Color}, Status: {Status}";
+    }
 }
