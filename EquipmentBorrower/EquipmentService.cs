@@ -2,21 +2,21 @@
 
 public class EquipmentService
 {
-    private readonly EquipmentRepository EquipmentRepository = new();
+    private readonly EquipmentRepository _equipmentRepository = new();
 
     public void AddEquipment(Equipment equipment)
     {
-        EquipmentRepository.Save(equipment);
+        _equipmentRepository.Save(equipment);
     }
 
     public List<Equipment> GetEquipments()
     {
-        return EquipmentRepository.FindAll();
+        return _equipmentRepository.FindAll();
     }
 
     public List<Equipment> GetAvailableEquipments()
     {
-        return EquipmentRepository.FindAll().Where(r => r.Status == EquipmentStatus.Available).ToList();
+        return _equipmentRepository.FindAll().Where(r => r.Status == EquipmentStatus.Available).ToList();
     }
 
     public void ServiceEquipment(Equipment equipment)

@@ -2,7 +2,7 @@
 
 public class RentService
 {
-    private readonly RentRepository RentRepository = new();
+    private readonly RentRepository _rentRepository = new();
 
     public void Rent(User user, Equipment equipment, DateTime returnDate)
     {
@@ -22,7 +22,7 @@ public class RentService
         var rent = new Rent(user, equipment, returnDate);
         user.Rents.Add(rent);
         equipment.Rents.Add(rent);
-        RentRepository.Save(rent);
+        _rentRepository.Save(rent);
     }
 
     private int GetMaxRentCount(User user)
@@ -46,7 +46,7 @@ public class RentService
 
     public List<Rent> GetAllLateReturnedRents()
     {
-        return RentRepository.FindAll().Where(r => r.DueDate < r.ReturnDate).ToList();
+        return _rentRepository.FindAll().Where(r => r.DueDate < r.ReturnDate).ToList();
     }
 
     public List<Rent> GetActiveRents(User user)
@@ -56,7 +56,7 @@ public class RentService
 
     public String GetReport()
     {
-        var rents = RentRepository.FindAll();
+        var rents = _rentRepository.FindAll();
         var activeRents = rents.Count(r => r.ReturnDate == null);
         return $"Number of all rents: {rents.Count}, Active rents: {activeRents}";
     }

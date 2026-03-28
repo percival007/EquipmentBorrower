@@ -2,10 +2,10 @@
 
 public class UserService
 {
-    private readonly UserRepository UserRepository = new();
+    private readonly UserRepository _userRepository = new();
 
     public void AddUser(User user)
     {
-        UserRepository.Save(user);
+        _userRepository.Save(user);
     }
 }
