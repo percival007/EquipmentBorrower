@@ -8,4 +8,4 @@ Próbą zadbania o kohezję jest wydzielenie serwisów na różne dziedziny np. 
 
 Próbą zadbania o coupling jest np. *Repository, dla jakiejkolwiek implementacji repozytorium, czy to będzie statyczne pole imitujące bazę czy faktyczna baza np. Postgres to nie powinno mieć to wpływu na np. serwisy.
 
-Uważan, że podział na persistence jako repozytorium i obsługę logiki biznesowej w serwisach jest odpowiednim rozwiązaniem. Wysoka kohezja i niski coupling.
+Uważam, że podział na persistence jako repozytorium i obsługę logiki biznesowej w swoich własnych serwisach jest odpowiednim rozwiązaniem jeżeli chodzi o podział klas.
